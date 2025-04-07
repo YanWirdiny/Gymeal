@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calorie Deficit and Weight Gain Calculator</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #f3f4f6;
+    }
+
+    .card {
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin: 1rem auto;
+      max-width: 600px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    button {
+      background-color: #2563eb;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .results {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background-color: #f3f4f6;
+      border-radius: 0.25rem;
+      display: none;
+    }
+
+    .suggestions {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background-color: #e5e7eb;
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+
+<body class="p-4">
+  <div class="card">
+    <h1 class="text-2xl font-bold mb-4">Calorie Deficit and Weight Gain Calculator</h1>
+    <p class="mb-4 text-gray-600">Welcome! Use this calculator to find out your daily calorie targets based on your
+      personal details and activity level.</p>
+
+    <form id="calculator-form" class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium">Age</label>
+          <input type="number" id="age" required min="15" max="120">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Weight (kg)</label>
+          <input type="number" id="weight" required min="30" max="300">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Height (cm)</label>
+          <input type="number" id="height" required min="120" max="250">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Gender</label>
+          <select id="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium">Activity Level</label>
+          <select id="activity">
+            <option value="sedentary">Sedentary (office job)</option>
+            <option value="light">Light Exercise (1-2 days/week)</option>
+            <option value="moderate">Moderate Exercise (3-5 days/week)</option>
+            <option value="very">Very Active (6-7 days/week)</option>
+            <option value="extra">Extra Active (physical job + training)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Neck Circumference (cm) <span
+              class="text-gray-500">(optional)</span></label>
+          <input type="number" id="neck" min="20" max="60">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Waist Circumference (cm) <span
+              class="text-gray-500">(optional)</span></label>
+          <input type="number" id="waist" min="50" max="150">
+        </div>
+
+        <div id="hip-container" style="display: none;">
+          <label class="block text-sm font-medium">Hip Circumference (cm) <span
+              class="text-gray-500">(optional)</span></label>
+          <input type="number" id="hip" min="50" max="150">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium">Goal</label>
+          <select id="goal">
+            <option value="deficit">Calorie Deficit</option>
+            <option value="gain">Weight Gain</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit">Calculate</button>
+    </form>
+
+    <div id="results" class="results">
+      <h2 class="font-medium mb-2">Your daily calorie targets:</h2>
+      <ul class="space-y-1">
+        <li>Maintenance: <span id="maintenance"></span> calories</li>
+        <li id="deficit-results">
+          <ul>
+            <li>Mild deficit (-500): <span id="mild"></span> calories</li>
+            <li>Moderate deficit (-750): <span id="moderate"></span> calories</li>
+            <li>Aggressive deficit (-1000): <span id="aggressive"></span> calories</li>
+          </ul>
+        </li>
+        <li id="gain-results">
+          <ul>
+            <li>Weight gain (+500): <span id="gain-500"></span> calories</li>
+            <li>Weight gain (+750): <span id="gain-750"></span> calories</li>
+            <li>Weight gain (+1000): <span id="gain-1000"></span> calories</li>
+          </ul>
+        </li>
+      </ul>
+      <h2 class="font-medium mb-2">Your BMI:</h2>
+      <p id="bmi"></p>
+      <p id="bmi-category"></p>
+      <h2 class="font-medium mb-2">Your Body Fat Percentage:</h2>
+      <p id="body-fat"></p>
+    </div>
+
+    <div id="suggestions" class="suggestions">
+      <h2 class="font-medium mb-2">Food and Exercise Suggestions:</h2>
+      <div id="food-suggestions"></div>
+      <div id="exercise-suggestions"></div>
+    </div>
+
+    <div class="mt-4 text-center">
+      <p class="text-gray-600">"The only bad workout is the one that didn't happen."</p>
+      <p class="text-gray-600">"Fitness is not about being better than someone else. It's about being better than you
+        used to be."</p>
+      <p class="text-gray-600">"Take care of your body. It's the only place you have to live."</p>
+    </div>
+
+    <div class="mt-4 text-center">
+      <p class="text-gray-600">Thank you for using this site. MK, peace out!</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('calculator-form');
+    const results = document.getElementById('results');
+    const foodSuggestions = document.getElementById('food-suggestions');
+    const exerciseSuggestions = document.getElementById('exercise-suggestions');
+    const genderSelect = document.getElementById('gender');
+    const hipContainer = document.getElementById('hip-container');
+    const goalSelect = document.getElementById('goal');
+    const deficitResults = document.getElementById('deficit-results');
+    const gainResults = document.getElementById('gain-results');
+
+    const activityMultipliers = {
+      sedentary: 1.2,
+      light: 1.375,
+      moderate: 1.55,
+      very: 1.725,
+      extra: 1.9
+    };
+
+    genderSelect.addEventListener('change', function () {
+      if (genderSelect.value === 'female') {
+        hipContainer.style.display = 'block';
+      } else {
+        hipContainer.style.display = 'none';
+      }
+    });
+
+    goalSelect.addEventListener('change', function () {
+      if (goalSelect.value === 'gain') {
+        deficitResults.style.display = 'none';
+        gainResults.style.display = 'block';
+      } else {
+        deficitResults.style.display = 'block';
+        gainResults.style.display = 'none';
+      }
+    });
+
+    function calculateBMR(weight, height, age, gender) {
+      if (gender === 'male') {
+        return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+      } else {
+        return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+      }
+    }
+
+    function calculateTDEE(bmr, activity) {
+      return bmr * activityMultipliers[activity];
+    }
+
+    function calculateBMI(weight, height) {
+      return weight / ((height / 100) ** 2);
+    }
+
+    function getBMICategory(bmi) {
+      if (bmi < 18.5) {
+        return 'Underweight';
+      } else if (bmi < 24.9) {
+        return 'Normal weight';
+      } else if (bmi < 29.9) {
+        return 'Overweight';
+      } else {
+        return 'Obesity';
+      }
+    }
+
+    function calculateBodyFatPercentage(gender, neck, waist, hip, height) {
+      if (gender === 'male') {
+        return 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76;
+      } else {
+        return 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
+      }
+    }
+
+
+
+    function getExerciseSuggestions(goal) {
+      if (goal === 'gain') {
+        return `
+                    <p>To complement your weight gain, consider these exercises:</p>
+                    <ul class="list-disc list-inside">
+                        <li>Strength Training</li>
+                        <li>Weight Lifting</li>
+                        <li>Resistance Exercises</li>
+                        <li>High-Protein Diet</li>
+                    </ul>
+                `;
+      } else {
+        return `
+                    <p>To complement your calorie deficit, consider these exercises:</p>
+                    <ul class="list-disc list-inside">
+                        <li>Walking or Jogging</li>
+                        <li>Cycling</li>
+                        <li>Swimming</li>
+                        <li>Yoga</li>
+                        <li>Strength Training</li>
+                    </ul>
+                `;
+      }
+    }
+
+// Sending  all calculation  to the  api endpoint
+    form.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const age = Number(document.getElementById('age').value);
+  const weight = Number(document.getElementById('weight').value);
+  const height = Number(document.getElementById('height').value);
+  const gender = document.getElementById('gender').value;
+  const activity = document.getElementById('activity').value;
+  const neck = Number(document.getElementById('neck').value) || 0;
+  const waist = Number(document.getElementById('waist').value) || 0;
+  const hip = gender === 'female' ? Number(document.getElementById('hip').value) || 0 : 0;
+  const goal = document.getElementById('goal').value;
+
+  const bmr = calculateBMR(weight, height, age, gender);
+  const tdee = calculateTDEE(bmr, activity);
+  const bmi = calculateBMI(weight, height);
+  const bmiCategory = getBMICategory(bmi);
+  const bodyFat = neck && waist ? calculateBodyFatPercentage(gender, neck, waist, hip, height) : 'N/A';
+
+  // Update the UI with computed values
+  document.getElementById('maintenance').textContent = Math.round(tdee);
+  document.getElementById('mild').textContent = Math.round(tdee - 500);
+  document.getElementById('moderate').textContent = Math.round(tdee - 750);
+  document.getElementById('aggressive').textContent = Math.round(tdee - 1000);
+  document.getElementById('gain-500').textContent = Math.round(tdee + 500);
+  document.getElementById('gain-750').textContent = Math.round(tdee + 750);
+  document.getElementById('gain-1000').textContent = Math.round(tdee + 1000);
+  document.getElementById('bmi').textContent = `BMI: ${bmi.toFixed(1)}`;
+  document.getElementById('bmi-category').textContent = `Category: ${bmiCategory}`;
+  document.getElementById('body-fat').textContent = `Body Fat Percentage: ${bodyFat !== 'N/A' ? bodyFat.toFixed(2) + '%' : bodyFat}`;
+  foodSuggestions.innerHTML = getFoodSuggestions(Math.round(tdee - 500), goal);
+  exerciseSuggestions.innerHTML = getExerciseSuggestions(goal);
+  results.style.display = 'block';
+
+  // Construct the payload with computed nutritional data
+  const payload = {
+    maintenance: Math.round(tdee),
+    mildDeficit: Math.round(tdee - 500),
+    moderateDeficit: Math.round(tdee - 750),
+    aggressiveDeficit: Math.round(tdee - 1000)
+    // We can add more values, such as protein targets, if needed
+  };
+
+  // Send the payload to your API endpoint
+  fetch('/api/calculate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Save the response data in localStorage
+    localStorage.setItem('mealPlanData', JSON.stringify(data));
+    // Redirect to the results page
+    window.location.href = '/results.html';
+
+    })
+    .catch(error => console.error('Error sending data:', error));
+});
+  </script>
+</body>
+
+</html>
