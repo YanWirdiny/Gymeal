@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class CalorieController {
     @Autowired
-    private  CalorieService calorieService;
+    private CalorieService calorieService;
 
     // Place for different endpoint
     @PostMapping("/calculate")
