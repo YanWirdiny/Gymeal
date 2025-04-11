@@ -14,11 +14,13 @@ public class CalorieService {
         // Example: Use maintenance calorie target for filtering meals.
         double targetCalories = request.getMaintenance();
         List<String> mealPlan = filterMealsFromCSV(targetCalories, request.getProtein()); // function to be creeated and  filter  meal  acordingly
-
+//
         CalorieResponse response = new CalorieResponse();
         response.setMaintenance(targetCalories);
         response.setMealPlan(mealPlan);
         return response;
+        // can add a new list for gaining 500 calories more
+
     }
 
     private List<String> filterMealsFromCSV(double targetCalories, double targetprotein) {
