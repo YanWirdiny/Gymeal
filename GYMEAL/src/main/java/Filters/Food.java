@@ -10,12 +10,15 @@ package Filters;
 public class Food {
 
     private String name;
+    private String category;
+
     private int calories;
+
     private double protein;
     private double carbs;
     private double fats;
-
     //CONSTRUCTORS
+
     public Food()
     {
         name = "";
@@ -24,7 +27,6 @@ public class Food {
         carbs = 0.0;
         fats = 0.0;
     }
-
     public Food(String name, int calories, double protein, double carbs, double fats)
     {
         this.name = name;
@@ -35,6 +37,7 @@ public class Food {
     }
 
     //getter methods
+
     public String getName()
     {
         return name;
@@ -54,6 +57,9 @@ public class Food {
     public double getFats()
     {
         return fats;
+    }
+    public String getCategory() {
+        return category;
     }
 
     //setter methods
@@ -76,6 +82,10 @@ public class Food {
     public void setFats(double fats)
     {
         this.fats = fats;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override
