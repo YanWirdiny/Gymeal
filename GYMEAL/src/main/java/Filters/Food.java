@@ -97,6 +97,7 @@ public class Food {
                 ", protein=" + protein +
                 ", carbs=" + carbs +
                 ", fats=" + fats +
+                ", category=" + category +
                 '}';
     }
 }
