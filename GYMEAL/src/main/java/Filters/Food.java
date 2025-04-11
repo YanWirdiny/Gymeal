@@ -26,14 +26,16 @@ public class Food {
         protein = 0.0;
         carbs = 0.0;
         fats = 0.0;
+        category = "";
     }
-    public Food(String name, int calories, double protein, double carbs, double fats)
+    public Food(String name, int calories, double protein, double carbs, double fats, String category)
     {
         this.name = name;
         this.calories = calories;
         this.protein = protein;
         this.carbs = carbs;
         this.fats = fats;
+        this.category = category;
     }
 
     //getter methods
