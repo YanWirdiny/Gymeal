@@ -7,8 +7,11 @@
 
 package Filters;
 
+import jakarta.persistence.*;
+
 public class Food {
 
+    //Variables
     private String name;
     private String category;
 
@@ -17,8 +20,8 @@ public class Food {
     private double protein;
     private double carbs;
     private double fats;
-    //CONSTRUCTORS
 
+    //CONSTRUCTORS
     public Food()
     {
         name = "";
@@ -28,6 +31,7 @@ public class Food {
         fats = 0.0;
         category = "";
     }
+
     public Food(String name, int calories, double protein, double carbs, double fats, String category)
     {
         this.name = name;
@@ -39,7 +43,6 @@ public class Food {
     }
 
     //getter methods
-
     public String getName()
     {
         return name;
@@ -90,10 +93,11 @@ public class Food {
         this.category = category;
     }
 
+    //converts a Food object into a readable String
     @Override
     public String toString() {
-        return "Food{" + name + '\'' +
-                ", calories=" + calories +
+        return "Food {" + name + ":" +
+                " calories=" + calories +
                 ", protein=" + protein +
                 ", carbs=" + carbs +
                 ", fats=" + fats +
