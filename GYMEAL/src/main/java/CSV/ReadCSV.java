@@ -18,11 +18,13 @@ import Filters.Food;
 import java.io.*;
 import java.util.ArrayList;
 public class ReadCSV {
-    public void readDataCSV()
-    {
-        //All data from CSV file is stored into this ArrayList
-        ArrayList<Food> foodList = new ArrayList<Food>();
 
+    //All data from CSV file is stored into this ArrayList
+    public ArrayList<Food> foodList = new ArrayList<Food>();
+
+    //traverses through the CSV file and stores information into 'Food' objects. Returns an ArrayList of foods.
+    public ArrayList<Food> readDataCSV()
+    {
         /* use of this Class ensures that we don't have to define a specific file path to find the CSV file (i.e. defining
          * the path as "C:\\Users\\admin\\Downloads\\data.csv" is not optimal). Instead, we store 'data.csv' in our
          * 'resources' package, and we set it as our parameter for method getResourceAsStream(). This tells the program
@@ -57,7 +59,6 @@ public class ReadCSV {
                 String[] values = line.split(",");
 
                 foodName = values[0];
-                System.out.println(foodName);
                 calories = Integer.parseInt(values[1]);
                 protein = Double.parseDouble(values[3]);
                 carbs = Double.parseDouble(values[4]);
@@ -66,10 +67,16 @@ public class ReadCSV {
 
                 Food food = new Food(foodName, calories, protein, carbs, fats, category);
                 foodList.add(food);
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return foodList;
+    }
+
+    //gets size of foodList
+    public int foodListSize()
+    {
+        return foodList.size();
     }
 }

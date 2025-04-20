@@ -9,6 +9,8 @@ public class CaloriesFilter implements Filter<Food>{
     private int minCals;
     private int maxCals;
     //Constructor
+
+    //FIXME: consider removing default constructor
     //default constructor
     public CaloriesFilter()
     {

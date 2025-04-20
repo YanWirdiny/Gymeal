@@ -12,6 +12,8 @@ import jakarta.persistence.*;
 public class Food {
 
     //Variables
+
+    private final int PER100GRAMS = 100;
     private String name;
     private String category;
 
@@ -96,12 +98,12 @@ public class Food {
     //converts a Food object into a readable String
     @Override
     public String toString() {
-        return "Food {" + name + ":" +
-                " calories=" + calories +
-                ", protein=" + protein +
-                ", carbs=" + carbs +
-                ", fats=" + fats +
-                ", category=" + category +
-                '}';
+        return name + ": [" +
+                "Calories: " + calories +
+                ", Protein: " + protein +
+                ", Carbs: " + carbs +
+                ", Fats: " + fats +
+                ", Category: " + category +
+                ']';
     }
 }
