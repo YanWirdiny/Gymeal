@@ -12,18 +12,26 @@ public class CalorieService {
 
     public CalorieResponse processCalorieData(CalorieDataRequest request) {
         // Example: Use maintenance calorie target for filtering meals.
-        double targetCalories = request.getMaintenance();
-        List<String> mealPlan = filterMealsFromCSV(targetCalories, request.getProtein()); // function to be creeated and  filter  meal  acordingly
+
+        String goal = request.getGoal();
+        double DefaultTargetCalories = request.getMaintenance();
+        // update default calories
+        if ("deficit".equals(goal)) {
+            DefaultTargetCalories = request.getModerateDeficit(); // pick based on logic
+        } else if ("gain".equals(goal)) {
+            DefaultTargetCalories = request.getModerateGain(); // pick based on logic
+        }
+        List<String> mealPlan = filterMealsFromCSV(DefaultTargetCalories, request.getProtein()); // function to be creeated and  filter  meal  acordingly
 //
         CalorieResponse response = new CalorieResponse();
-        response.setMaintenance(targetCalories);
+        response.setMaintenance(DefaultTargetCalories);
         response.setMealPlan(mealPlan);
         return response;
         // can add a new list for gaining 500 calories more
 
     }
 
-    private List<String> filterMealsFromCSV(double targetCalories, double targetprotein) {
+    private List<String> filterMealsFromCSV(double DefaultTargetCalories, double targetprotein) {
 //         return list of  string where protein   of each element is added  to be equal  to final
 //          target calories
 

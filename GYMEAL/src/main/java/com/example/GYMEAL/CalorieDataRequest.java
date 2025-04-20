@@ -6,7 +6,12 @@ private  double maintenance ;
 private  double mildDeficit ;
 private  double moderateDeficit ;
 private  double aggressiveDeeficit ;
+private  double mildGain ;
+private  double moderateGain ;
+private double aggressiveGain;
 private  double protein ;
+private String bmi;
+private String goal;
 
     public double getMaintenance() {
         return maintenance;
@@ -40,11 +45,51 @@ private  double protein ;
         this.aggressiveDeeficit = aggressiveDeeficit;
     }
 
+    public void setMildGain(double mildGain) {
+        this.mildGain = mildGain;
+    }
+
+    public void setModerateGain(double moderateGain) {
+        this.moderateGain = moderateGain;
+    }
+
+    public void setAggressiveGain(double aggressiveGain) {
+        this.aggressiveGain = aggressiveGain;
+    }
+
+    public double getMildGain() {
+        return mildGain;
+    }
+
+    public double getModerateGain() {
+        return moderateGain;
+    }
+
+    public double getAggressiveGain() {
+        return aggressiveGain;
+    }
+
     public double getProtein() {
         return protein;
     }
 
     public void setProtein(double protein) {
         this.protein = protein;
+    }
+
+    public String getBmi() {
+        return bmi;
+    }
+
+    public String getGoal() {
+        return goal;
+    }
+
+    public void setBmi(String bmi) {
+        this.bmi = bmi;
+    }
+
+    public void setGoal(String goal) {
+        this.goal = goal;
     }
 }

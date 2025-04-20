@@ -100,7 +100,11 @@
                 <select id="goal" required>
                     <option value="" disabled selected></option>
                     <option value="deficit">Calorie Deficit</option>
+                    <option value="gain">Moderate Calorie deficit</option>
+                    <option value="gain">Aggressive Calorie deficit</option>
                     <option value="gain">Weight Gain</option>
+                    <option value="gain">Moderate Weight Gain</option>
+                    <option value="gain">Aggressive Weight Gain</option>
                 </select>
             </div>
         </div>
@@ -166,7 +170,7 @@
     return weight / ((height / 100) ** 2);
   }
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', function (e){
     e.preventDefault(); // prevent page reload
 
     const age = Number(document.getElementById('age').value);
@@ -182,6 +186,37 @@
     document.getElementById('test1').textContent = Math.round(tdee - 500);   // mild
     document.getElementById('test2').textContent = Math.round(tdee - 750);   // moderate
     document.getElementById('test3').textContent = Math.round(tdee - 1000);  // aggressive
+
+    // create payload and send information through api
+
+    const payload = {
+      maintenance: Math.round(tdee),
+      mildDeficit: Math.round(tdee - 500),
+      moderateDeficit: Math.round(tdee - 750),
+      aggressiveDeficit: Math.round(tdee - 1000),
+      mildGain :Math.round(tdee +  500),
+      moderateGain : Math.round(tdee + 750),
+      aggressiveGain :Math.round(tdee + 1000),
+      bmi: bmi.toFixed(1),
+      goal
+    };
+    // send to api
+
+     fetch('/api/calculate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem('mealPlanData', JSON.stringify(data));
+      window.location.href = '/results.html';
+    })
+    .catch(error => {
+      console.error('Error sending data:', error);
+    });
   });
 </script>
 </body>
