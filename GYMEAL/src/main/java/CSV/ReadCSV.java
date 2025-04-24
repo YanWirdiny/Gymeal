@@ -73,10 +73,4 @@ public class ReadCSV {
         }
         return foodList;
     }
-
-    //gets size of foodList
-    public int foodListSize()
-    {
-        return foodList.size();
-    }
 }

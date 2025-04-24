@@ -6,9 +6,7 @@
 package com.example.GYMEAL;
 
 import Filters.Food;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 
 public class FoodTests {
@@ -23,9 +21,6 @@ public class FoodTests {
         foods.add(new Food("Peach", 80, 0.0, 3.0, 4.0, "fruits"));
         foods.add(new Food("Rice", 75, 3.0, 20, 1.0, "grains"));
         foods.add(new Food("Gatorade", 150, 0.0, 2.0, 3.0, "drinks"));
-
-        //Used to check the total size of the Food ArrayList
-        //System.out.println("Food list size: " + foods.size()); // = 5
     }
 
     //Tests all getter methods within the Food class
@@ -67,6 +62,5 @@ public class FoodTests {
             System.out.println(foods.get(i).toString());
         }
     }
-
 
 }

@@ -15,7 +15,8 @@ public class FilterList {
     //VARIABLES
     public ReadCSV readCSV = new ReadCSV();        //generates unfiltered list of foods
     public ArrayList<Food> unfilteredFoodList = readCSV.readDataCSV();      //unfiltered list
-    private final int unfilteredListSize = readCSV.foodListSize();        //size of unfiltered list
+    //replace with unfilteredFoodList.size()
+    private final int unfilteredListSize = unfilteredFoodList.size();        //size of unfiltered list
 
     //METHODS
 
