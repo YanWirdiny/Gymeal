@@ -9,6 +9,8 @@ import Filters.CaloriesFilter;
 import Filters.Filter;
 import Filters.Food;
 import java.util.ArrayList;
+import Filters.CategoryFilter;
+import jdk.jfr.Category;
 
 public class FilterList {
 
@@ -16,7 +18,31 @@ public class FilterList {
     public ReadCSV readCSV = new ReadCSV();        //generates unfiltered list of foods
     public ArrayList<Food> unfilteredFoodList = readCSV.readDataCSV();      //unfiltered list
     //replace with unfilteredFoodList.size()
-    private final int unfilteredListSize = unfilteredFoodList.size();        //size of unfiltered list
+    private final int unfilteredListSize = unfilteredFoodList.size();
+    //size of unfiltered list
+    CategoryFilter categoryFilter = new CategoryFilter();
 
-    //METHODS
+
+
+    public ArrayList<Food> sortUnfiltered() {
+
+        ArrayList<Food> filteredList = new ArrayList<>();
+
+        ArrayList<Food> meatList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.MEAT);
+        ArrayList<Food> fruitList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.FRUIT);
+        ArrayList<Food> vegetableList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.VEGETABLE);
+        ArrayList<Food> grainList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.GRAINS);
+        ArrayList<Food> drinkList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.DRINKS);
+
+        filteredList.addAll(meatList);
+        filteredList.addAll(fruitList);
+        filteredList.addAll(vegetableList);
+        filteredList.addAll(grainList);
+        filteredList.addAll(drinkList);
+
+        return filteredList;
+
+
+        //METHODS
+    }
 }
