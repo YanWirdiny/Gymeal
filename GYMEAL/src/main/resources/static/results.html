@@ -3,14 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal Plan Results</title>
+    <title> Gymeal </title>
+    <style>
+        body {
+            background-color: lightgray;
+            font-family: Verdana, sans-serif;
+            text-align: center;
+        }
+
+        .box1 {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 600px;
+        }
+
+        .box2 {
+            background: lightgray;
+            border-radius: 1.5rem;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 600px;
+        }
+    </style>
 </head>
 <body>
-<h1>Your Meal Plan</h1>
-<div id="meal-plan"></div>
-
-
-
+<div class="box1">
+    <h1>Gymeal</h1>
+    <div class="box2" id="dataResult">
+        <h2>Information</h2>
+        <p style="text-align: left;"><strong>Calories Required:</strong> <span id="calories">0</span> kcal</p>
+        <p style="text-align: left;"><strong>Proteins Required:</strong> <span id="proteins">0</span> g</p>
+    </div>
+    <div class="box2" id="mealResult">
+        <h2>Meals</h2>
+        <p id="meat" style="text-align: left;"><strong>Meat Based Dish</strong>: <br><br><span id="meatText">0</span></p>
+        <p id="grain" style="text-align: left;"><strong>Grain Based Dish</strong>: <br><br><span id="grainText">0</span></p>
+        <p id="drink" style="text-align: left;"><strong>Drinks</strong>: <br><br><span id="drinkText">0</span></p>
+        <p id="vegetable" style="text-align: left;"><strong>Vegetable Based Dish</strong>: <br><br><span id="vegText">0</span></p>
+        <p id="fruit" style="text-align: left;"><strong>Fruit Based Dish</strong>: <br><br><span id="fruitText">0</span></p>
+    </div>
+</div>
 <script>
     // parsing from  local storage and  send  them to the front.
     const data = JSON.parse(localStorage.getItem('mealPlanData'));
