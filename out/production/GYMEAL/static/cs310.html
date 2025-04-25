@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Gymeal </title>
+    <style>
+        body {
+            background-color: lightgray;
+            font-family: Verdana, sans-serif;
+            text-align: center;
+        }
+
+        .box {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 600px;
+        }
+
+        input,select {
+            width: 50%;
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            margin: 5px auto;
+        }
+
+        button {
+            background-color: green;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #007000;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>Gymeal</h1>
+    <p class="mb-4 text-gray-600">Use Gymeal to find the best meals for your workouts!</p><br>
+
+    <form id="gymealForm" method="get" class="p-4 border rounded">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+            <div>
+                <label class="block text-sm font-medium">Age</label><br>
+                <input type="number" id="age" required min="0" max="120">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Weight (lb)</label><br>
+                <input type="number" id="weight" required min="0" max="1000">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Height (ft)</label><br>
+                <input type="number" id="height" required min="0" max="10" step="0.1">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Gender</label><br>
+                <select id="gender" required>
+                    <option value="" disabled selected></option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="null">Prefer not to say</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Workout</label><br>
+                <select id="work" required>
+                    <option value="" disabled selected></option>
+                    <option value="strength">Strength</option>
+                    <option value="cardio">Cardio</option>
+                    <option value="yoga">Yoga</option>
+                    <option value="hiit">HIIT</option>
+                    <option value="cycling">Cycling</option>
+                    <option value="running">Running</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium">Goal</label><br>
+                <select id="goal" required>
+                    <option value="" disabled selected></option>
+                    <option value="deficit">Calorie Deficit</option>
+                    <option value="gain">Moderate Calorie deficit</option>
+                    <option value="gain">Aggressive Calorie deficit</option>
+                    <option value="gain">Weight Gain</option>
+                    <option value="gain">Moderate Weight Gain</option>
+                    <option value="gain">Aggressive Weight Gain</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="md:col-span-2">
+            <label class="block text-sm font-medium">Activity Level</label><br>
+            <select id="activity" required>
+                <option value="" disabled selected></option>
+                <option value="sedentary">Sedentary (office job)</option>
+                <option value="light">Light Exercise (1-2 days/week)</option>
+                <option value="moderate">Moderate Exercise (3-5 days/week)</option>
+                <option value="very">Very Active (6-7 days/week)</option>
+                <option value="extra">Extra Active (physical job + training)</option>
+            </select>
+        </div>
+
+        <div style="display: flex; justify-content: right; align-items: center">
+            <p title="This is a description of the text.">Prefer Categories</p><br>
+            <input type="checkbox" id="veg" name="categories" value="vegetable" checked> Vegetable
+            <input type="checkbox" name="categories" value="meat" checked> Meat
+            <input type="checkbox" name="categories" value="grains" checked> Grains
+            <input type="checkbox" name="categories" value="drinks" checked> Drinks
+            <input type="checkbox" name="categories" value="seafood" checked> Seafood
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem; width: 100%">
+            <button type="submit">Calculate</button>
+        </div>
+
+        <div id="test">
+            <ul>
+                <li>Mild deficit (-500): <span id="test1"></span> calories</li>
+                <li>Moderate deficit (-750): <span id="test2"></span> calories</li>
+                <li>Aggressive deficit (-1000): <span id="test3"></span> calories</li>
+            </ul>
+        </div>
+    </form>
+</div>
+<script>
+  const form = document.getElementById('gymealForm');
+
+  const activityMultipliers = {
+    sedentary: 1.2,
+    light: 1.375,
+    moderate: 1.55,
+    very: 1.725,
+    extra: 1.9
+  };
+
+  function calculateBMR(weight, height, age, gender) {
+    if (gender === 'male') {
+      return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+    } else {
+      return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+    }
+  }
+
+  function calculateTDEE(bmr, activity) {
+    return bmr * activityMultipliers[activity];
+  }
+
+  function calculateBMI(weight, height) {
+    return weight / ((height / 100) ** 2);
+  }
+
+  form.addEventListener('submit', function (e){
+    e.preventDefault(); // prevent page reload
+
+    const age = Number(document.getElementById('age').value);
+    const weight = Number(document.getElementById('weight').value);
+    const height = Number(document.getElementById('height').value);
+    const gender = document.getElementById('gender').value;
+    const activity = document.getElementById('activity').value;
+
+    const bmr = calculateBMR(weight, height, age, gender);
+    const tdee = calculateTDEE(bmr, activity);
+    const bmi = calculateBMI(weight, height);
+
+    document.getElementById('test1').textContent = Math.round(tdee - 500);   // mild
+    document.getElementById('test2').textContent = Math.round(tdee - 750);   // moderate
+    document.getElementById('test3').textContent = Math.round(tdee - 1000);  // aggressive
+
+    // create payload and send information through api
+
+    const payload = {
+      maintenance: Math.round(tdee),
+      mildDeficit: Math.round(tdee - 500),
+      moderateDeficit: Math.round(tdee - 750),
+      aggressiveDeficit: Math.round(tdee - 1000),
+      mildGain :Math.round(tdee +  500),
+      moderateGain : Math.round(tdee + 750),
+      aggressiveGain :Math.round(tdee + 1000),
+      bmi: bmi.toFixed(1),
+      goal
+    };
+    // send to api
+
+     fetch('/api/calculate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem('mealPlanData', JSON.stringify(data));
+      window.location.href = '/results.html';
+    })
+    .catch(error => {
+      console.error('Error sending data:', error);
+    });
+  });
+</script>
+</body>
+</html>

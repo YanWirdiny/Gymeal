@@ -31,7 +31,7 @@ public class ReadCSV {
          * to check our resources folder for the file we give it. NullPointerException is thrown if it can't find
          * the given file.
          * */
-        InputStream path = ReadCSV.class.getClassLoader().getResourceAsStream("data.csv");
+        InputStream path = ReadCSV.class.getClassLoader().getResourceAsStream("static/data.csv");
 
         String line = "";
 

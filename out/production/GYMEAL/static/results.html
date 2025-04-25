@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Plan Results</title>
+</head>
+<body>
+<h1>Your Meal Plan</h1>
+<div id="meal-plan"></div>
+
+
+
+<script>
+    // parsing from  local storage and  send  them to the front.
+    const data = JSON.parse(localStorage.getItem('mealPlanData'));
+    if (data && data.mealPlan) {
+      // Create HTML content based on the meal plan array
+      const planHTML = data.mealPlan.map(meal => `<p>${meal}</p>`).join('');
+      document.getElementById('meal-plan').innerHTML = planHTML;
+    } else {
+      document.getElementById('meal-plan').innerHTML = '<p>No meal plan data available.</p>';
+    }
+</script>
+</body>
+</html>
