@@ -92,4 +92,22 @@ private String goal;
     public void setGoal(String goal) {
         this.goal = goal;
     }
+
+
+    @Override
+    public String toString() {
+        return "CalorieDataRequest{" +
+                "maintenance=" + maintenance +
+                ", mildDeficit=" + mildDeficit +
+                ", moderateDeficit=" + moderateDeficit +
+                ", aggressiveDeeficit=" + aggressiveDeeficit +
+                ", mildGain=" + mildGain +
+                ", moderateGain=" + moderateGain +
+                ", aggressiveGain=" + aggressiveGain +
+                ", protein=" + protein +
+                ", bmi='" + bmi + '\'' +
+                ", goal='" + goal + '\'' +
+                '}';
+    }
+
 }

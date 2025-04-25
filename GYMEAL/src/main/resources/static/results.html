@@ -35,28 +35,63 @@
     <h1>Gymeal</h1>
     <div class="box2" id="dataResult">
         <h2>Information</h2>
-        <p style="text-align: left;"><strong>Calories Required:</strong> <span id="calories">0</span> kcal</p>
-        <p style="text-align: left;"><strong>Proteins Required:</strong> <span id="proteins">0</span> g</p>
+        <p style="text-align: left;"><strong>Calories Required:</strong> <span id="calories"></span> kcal</p>
+        <p style="text-align: left;"><strong>Proteins Required:</strong> <span id="proteins"></span> g</p>
     </div>
     <div class="box2" id="mealResult">
         <h2>Meals</h2>
-        <p id="meat" style="text-align: left;"><strong>Meat Based Dish</strong>: <br><br><span id="meatText">0</span></p>
-        <p id="grain" style="text-align: left;"><strong>Grain Based Dish</strong>: <br><br><span id="grainText">0</span></p>
-        <p id="drink" style="text-align: left;"><strong>Drinks</strong>: <br><br><span id="drinkText">0</span></p>
-        <p id="vegetable" style="text-align: left;"><strong>Vegetable Based Dish</strong>: <br><br><span id="vegText">0</span></p>
-        <p id="fruit" style="text-align: left;"><strong>Fruit Based Dish</strong>: <br><br><span id="fruitText">0</span></p>
+
+        <div id="meal-plan"></div>
     </div>
 </div>
 <script>
-    // parsing from  local storage and  send  them to the front.
-    const data = JSON.parse(localStorage.getItem('mealPlanData'));
-    if (data && data.mealPlan) {
-      // Create HTML content based on the meal plan array
-      const planHTML = data.mealPlan.map(meal => `<p>${meal}</p>`).join('');
-      document.getElementById('meal-plan').innerHTML = planHTML;
-    } else {
-      document.getElementById('meal-plan').innerHTML = '<p>No meal plan data available.</p>';
-    }
+
+   // parsing from  local storage and  send  them to the front.
+   const data = JSON.parse(localStorage.getItem('mealPlanData'));
+   if (data && data.mealPlan) {
+     // Create HTML content based on the meal plan array
+     const planHTML = data.mealPlan.map(meal => `<p>${meal}</p>`).join('');
+
+     document.getElementById('meal-plan').innerHTML = planHTML;
+
+   } else {
+     document.getElementById('meal-plan').innerHTML = '<p>No meal plan data available.</p>';
+   }
+
+    document.addEventListener('DOMContentLoaded', () => {
+   const tdee = Number(localStorage.getItem('tdee'));
+   const protein = localStorage.getItem('proteinTarget');
+   const bmi = localStorage.getItem('bmi');
+   const goal = localStorage.getItem('goal');
+
+   let adjustedCalories = tdee;
+
+    switch(goal) {
+     case 'deficit':
+       adjustedCalories = tdee - 500; // Example for mild deficit
+       break;
+     case 'moderateDeficit':
+       adjustedCalories = tdee - 750;
+       break;
+     case 'aggressiveDeficit':
+       adjustedCalories = tdee - 1000;
+       break;
+     case 'gain':
+       adjustedCalories = tdee + 500;
+       break;
+     case 'moderateGain':
+       adjustedCalories = tdee + 700;
+       break;
+     case 'aggressiveGain':
+       adjustedCalories = tdee + 1000;
+       break;
+     default:
+       adjustedCalories = tdee;
+   }
+
+ document.getElementById('calories').textContent = adjustedCalories;
+ document.getElementById('proteins').textContent = protein ;});
+
 </script>
 </body>
 </html>

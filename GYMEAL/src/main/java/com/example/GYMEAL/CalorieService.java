@@ -1,12 +1,15 @@
 package com.example.GYMEAL;
-import  org.springframework.stereotype.Service;
 
+import Filters.Food;
+import  org.springframework.stereotype.Service;
+import Filters.CategoryFilter;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class CalorieService {
     //  Where to  work  with the response  and  CSv filtering
@@ -32,6 +35,19 @@ public class CalorieService {
         // can add a new list for gaining 500 calories more
 
     }
+    public CalorieResponse processcategorie( CalorieDataRequest request2){
+        return  null ;
+
+    }
+    public List<String> FilterCategory(String categorie, ArrayList<Food> x ){
+        // call filtercategory here and
+
+        return null;
+    }
+
+
+
+
 
     public List<String> filterMealsFromCSV(double DefaultTargetCalories, double targetprotein) {
 //         return list of  string where protein   of each element is added  to be equal  to final
@@ -63,6 +79,7 @@ public class CalorieService {
         for (Meal meal : meals) {
             if (calorieSum + meal.getCalories() <= DefaultTargetCalories + 50) {
                 calorieSum += meal.getCalories();
+               // String cal = String.valueOf(meal.calories);
                 selectedMeals.add(meal.getName());
             }
             if (calorieSum >= DefaultTargetCalories - 50) {
