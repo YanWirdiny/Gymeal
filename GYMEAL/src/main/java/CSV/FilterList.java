@@ -14,22 +14,21 @@ import jdk.jfr.Category;
 
 public class FilterList {
 
-    //VARIABLES
-    public ReadCSV readCSV = new ReadCSV();        //generates unfiltered list of foods
-    public ArrayList<Food> unfilteredFoodList = readCSV.readDataCSV();      //unfiltered list
-    CategoryFilter categoryFilter = new CategoryFilter(); // object for CategoryFilter
+    //        VARIABLES
+    public ReadCSV readCSV = new ReadCSV();  
+    public ArrayList<Food> unfilteredFoodList = readCSV.readDataCSV();  
+           
+                            Cat gory 
 
-<<<<<<< Updated upstream
-
-    // using the array created form ReadCSV, sort the elements by category
-    public ArrayList<Food> sortUnfiltered() {
-
+           
+                                              //     sing the array c    public ArrayList<Food> sortUnfiltered() {
+        
         // create new array to store sorted elements
-        ArrayList<Food> filteredList = new ArrayList<>();
+                ArrayList<Food> filteredList = new ArrayList<>();
 
         // create 5 different arrays for each category and sort them by their categories
-        ArrayList<Food> meatList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.MEAT);
-        ArrayList<Food> fruitList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.FRUIT);
+        ArrayList<Food> meatList = categoryFilter.filterByCategory(unfilte
+                                ArrayList<Food> fruitList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.FRUIT);
         ArrayList<Food> vegetableList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.VEGETABLE);
         ArrayList<Food> grainList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.GRAINS);
         ArrayList<Food> drinkList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.DRINKS);
@@ -48,10 +47,20 @@ public class FilterList {
 
         //METHODS
     }
-=======
-    //categoryFilter
-
-    //METHODS
->>>>>>> Stashed changes
 }
 
+  
+    
+
+    
+  
+    
+
+           
+      
+     
+     
+    
+
+    
+ 
