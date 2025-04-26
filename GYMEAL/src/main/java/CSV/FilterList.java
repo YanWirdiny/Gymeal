@@ -22,7 +22,7 @@ public class FilterList {
     //size of unfiltered list
     CategoryFilter categoryFilter = new CategoryFilter();
 
-
+    // using the array created form ReadCSV, sort the elements by category
 
     public ArrayList<Food> sortUnfiltered() {
 

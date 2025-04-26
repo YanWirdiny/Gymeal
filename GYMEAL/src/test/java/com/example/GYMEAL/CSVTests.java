@@ -1,4 +1,4 @@
-﻿package com.example.GYMEAL;
+package com.example.GYMEAL;
 
 import CSV.ReadCSV;
 
