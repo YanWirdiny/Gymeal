@@ -23,6 +23,7 @@ public class FilterList {
     CategoryFilter categoryFilter = new CategoryFilter();
 
 
+<<<<<<< Updated upstream
 
     public ArrayList<Food> sortUnfiltered() {
 
@@ -45,4 +46,9 @@ public class FilterList {
 
         //METHODS
     }
+=======
+    //categoryFilter
+
+    //METHODS
+>>>>>>> Stashed changes
 }
