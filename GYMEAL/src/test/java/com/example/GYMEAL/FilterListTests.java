@@ -13,12 +13,14 @@ import java.util.ArrayList;
 
 
 public class FilterListTests {
+    // create FilterList object
     FilterList filterList = new FilterList();
+    // create array for filtered list
     ArrayList<Food> filteredList = new ArrayList<>();
 
     @Test
     public void FilterList() {
-
+        // test sortUnfiltered()
         filteredList = filterList.sortUnfiltered();
         System.out.println(filteredList.toString());
     }

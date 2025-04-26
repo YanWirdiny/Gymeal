@@ -17,23 +17,25 @@ public class FilterList {
     //VARIABLES
     public ReadCSV readCSV = new ReadCSV();        //generates unfiltered list of foods
     public ArrayList<Food> unfilteredFoodList = readCSV.readDataCSV();      //unfiltered list
-    //replace with unfilteredFoodList.size()
-    private final int unfilteredListSize = unfilteredFoodList.size();
-    //size of unfiltered list
-    CategoryFilter categoryFilter = new CategoryFilter();
+    CategoryFilter categoryFilter = new CategoryFilter(); // object for CategoryFilter
 
 
-
+    // using the array created form ReadCSV, sort the elements by category
     public ArrayList<Food> sortUnfiltered() {
 
+        // create new array to store sorted elements
         ArrayList<Food> filteredList = new ArrayList<>();
 
+        // create 5 different arrays for each category and sort them by their categories
         ArrayList<Food> meatList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.MEAT);
         ArrayList<Food> fruitList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.FRUIT);
         ArrayList<Food> vegetableList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.VEGETABLE);
         ArrayList<Food> grainList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.GRAINS);
         ArrayList<Food> drinkList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.DRINKS);
 
+        // add all category arrays to the final array which will now contain all
+        // the elements from the ReadCSV array but in sorted order by category and
+        // return the final array
         filteredList.addAll(meatList);
         filteredList.addAll(fruitList);
         filteredList.addAll(vegetableList);
