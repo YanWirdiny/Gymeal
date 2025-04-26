@@ -18,17 +18,17 @@ public class FilterList {
     public ReadCSV readCSV = new ReadCSV();  
     public ArrayList<Food> unfilteredFoodList = readCSV.readDataCSV();  
            
-                            Cat gory 
+    CategoryFilter categoryFilter = new CategoryFilter();
 
            
-                                              //     sing the array c    public ArrayList<Food> sortUnfiltered() {
+    public ArrayList<Food> sortUnfiltered() {
         
         // create new array to store sorted elements
                 ArrayList<Food> filteredList = new ArrayList<>();
 
         // create 5 different arrays for each category and sort them by their categories
-        ArrayList<Food> meatList = categoryFilter.filterByCategory(unfilte
-                                ArrayList<Food> fruitList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.FRUIT);
+        ArrayList<Food> meatList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.MEAT);
+        ArrayList<Food> fruitList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.FRUIT);
         ArrayList<Food> vegetableList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.VEGETABLE);
         ArrayList<Food> grainList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.GRAINS);
         ArrayList<Food> drinkList = categoryFilter.filterByCategory(unfilteredFoodList, CategoryFilter.Category.DRINKS);
