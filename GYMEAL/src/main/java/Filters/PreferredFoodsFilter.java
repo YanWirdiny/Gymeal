@@ -25,9 +25,7 @@ public class PreferredFoodsFilter implements Filter<Food>{
         if (filteredlist.isEmpty()) {
             return null;
         }
-
         return filteredlist;
-
     }
 
     // checks if the name of the food item equals the preferred food
@@ -45,8 +43,8 @@ public class PreferredFoodsFilter implements Filter<Food>{
 
     // checks if the preferred food name is contained in the name of a food item
     @Override
-    public boolean apply(Food fooditem) {
-        String[] namesOfFood = fooditem.getName().split("\\s");
+    public boolean apply(Food foodItem) {
+        String[] namesOfFood = foodItem.getName().split("\\s");
         for (String name : namesOfFood) {
             if (matchesPreferredFood(name)) {
                 return true;
