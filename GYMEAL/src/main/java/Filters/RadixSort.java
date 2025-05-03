@@ -1,13 +1,13 @@
 /*RadixSort class
  * Purpose: this class was created to be used inside the CaloriesFilter class to sort foods based off of their
- * caloric values either in ascending or descending order.
+ * caloric values either in ascending or descending order. Default is set to ascending order.
  * */
 package Filters;
 
 import java.util.*;
 
 public class RadixSort {
-    // A utility function to get food with maximum caloric value in foodList
+    // method to get food with maximum caloric value in foodList
     public int getMax(ArrayList<Food> foodList)
     {
         //max value always set to first element in list
@@ -26,7 +26,7 @@ public class RadixSort {
         return max;
     }
 
-    // A function to do counting sort on foodList according to
+    // method to do counting sort on foodList according to
     // the digit represented by exp.
     public void countSort(ArrayList<Food> foodList, int exp)
     {
@@ -67,14 +67,15 @@ public class RadixSort {
 
         // Copy the output array to foodList, so that foodList now contains foods sorted by caloric value
         //NOTE: you could simply modify this method so that it returns the output ArrayList
+
         for (int i = 0; i < foodList.size(); i++)
         {
             foodList.set(i, output.get(i));
         }
     }
 
-    // The main function to that sorts foodList of using Radix Sort
-    public void radixSort(ArrayList<Food> foodList)
+    // The main method that sorts foodList using Radix Sort
+    public ArrayList<Food> radixSort(ArrayList<Food> foodList)
     {
         // Find the maximum number to know number of digits
         int m = getMax(foodList);
@@ -83,12 +84,7 @@ public class RadixSort {
         // exp = 10^i where i is current digit number
         for (int exp = 1; m / exp > 0; exp *= 10)
             countSort(foodList, exp);
-    }
 
-    // A utility function that prints an array
-    public void print(ArrayList<Food> foodList)
-    {
-        for (int i = 0; i < foodList.size(); i++)
-            System.out.println(foodList.get(i) + " ");
+        return foodList;
     }
 }

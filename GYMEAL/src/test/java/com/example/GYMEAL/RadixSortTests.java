@@ -1,4 +1,10 @@
+/* RadixSort class
+ * Purpose: tests the RadixSort algorithm used to sort the list of foods in descending or ascending order based off of
+ * their caloric value.
+ * */
+
 package com.example.GYMEAL;
+
 
 import Filters.Food;
 import Filters.RadixSort;
@@ -9,6 +15,8 @@ import java.util.ArrayList;
 public class RadixSortTests {
     public RadixSort radixSort = new RadixSort();
     public ArrayList<Food> foods = new ArrayList<>();
+
+    //test list of foods
     @Test
     public void addFood()
     {
@@ -19,6 +27,7 @@ public class RadixSortTests {
         foods.add(new Food("Gatorade", 150, 0.0, 2.0, 3.0, "drinks"));
     }
 
+    //returns food with the highest caloric value
     @Test
     public void getMaxTest()
     {
@@ -26,11 +35,11 @@ public class RadixSortTests {
         System.out.println("Food with max caloric value: " + radixSort.getMax(foods));
     }
 
+    //performs test on RadixSort
     @Test
     public void radixSortTest()
     {
         addFood();
         radixSort.radixSort(foods);
-        radixSort.print(foods);
     }
 }

@@ -5,15 +5,19 @@
  * */
 package Filters;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CaloriesFilter implements Filter<Food>{
 
     private int minCals;
     private int maxCals;
-    //Constructor
 
-    //FIXME: consider removing default constructor
+    //algorithm used to sort food lists
+    RadixSort radix = new RadixSort();
+
+    //CONSTRUCTORS
+
     //default constructor
     public CaloriesFilter()
     {
@@ -58,6 +62,31 @@ public class CaloriesFilter implements Filter<Food>{
             //otherwise, do not add the food to the list (do nothing)
         }
         return filteredList;
+    }
+
+    // Sorts food items in ascending order based off of caloric values
+    // smallest value -> largest value
+    public ArrayList<Food> sortAscending(ArrayList<Food> list)
+    {
+        return radix.radixSort(list);
+    }
+
+    //Sorts foods in descending order based off of caloric value
+    //largest value -> smallest value
+    public ArrayList<Food> sortDescending(ArrayList<Food> list)
+    {
+        ArrayList<Food> descendList = new ArrayList<>();
+        radix.radixSort(list);
+
+        //By default, the radixSort() method arranges the list in ascending order. To
+        //get around this, we simply copy the last element from the ascending list and
+        //store it as the first element in a new list and repeat for all other elements
+        //accordingly.
+        for(int i = list.size() - 1; i >= 0; i--)
+        {
+            descendList.add(list.get(i));
+        }
+        return descendList;
     }
 
     //takes a Food object, extracts caloric value of the food and compares it to the

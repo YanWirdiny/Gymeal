@@ -9,6 +9,7 @@ package com.example.GYMEAL;
 import CSV.ReadCSV;
 import Filters.CaloriesFilter;
 import Filters.Food;
+import Filters.RadixSort;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class CaloriesFiltersTests {
     //used to generate unfiltered list form CSV file
     ReadCSV reader = new ReadCSV();
     ArrayList<Food> unfilteredFoods = reader.readDataCSV();
+
 
     /* tests the following methods:
      * apply()
@@ -67,6 +69,50 @@ public class CaloriesFiltersTests {
             System.out.println(foodsFilteredList.get(i).toString());
         }
         System.out.println("List size: " + foodsFilteredList.size());
+        System.out.println();
+    }
+
+    @Test
+    public void sortAscendingTest()
+    {
+        //Food list before sorting
+        System.out.println("ASCENDING ORDER \nList before sorting: ");
+        for(int i = 0; i < unfilteredFoods.size(); i++)
+        {
+            System.out.println(unfilteredFoods.get(i).toString());
+        }
+        System.out.println();
+
+        ArrayList<Food> ascendingList = caloriesFilter.sortAscending(unfilteredFoods);
+
+        //Food list after sorting
+        System.out.println("List after sorting: ");
+        for(int i = 0; i < ascendingList.size(); i++)
+        {
+            System.out.println(ascendingList.get(i).toString());
+        }
+        System.out.println();
+    }
+
+    @Test
+    public void sortDescendingTest()
+    {
+        //Food list before sorting
+        System.out.println("DESCENDING ORDER \n List before sorting: " );
+        for(int i = 0; i < unfilteredFoods.size(); i++)
+        {
+            System.out.println(unfilteredFoods.get(i).toString());
+        }
+        System.out.println();
+
+        ArrayList<Food> descendingList = caloriesFilter.sortDescending(unfilteredFoods);
+
+        //Food list after sorting
+        System.out.println("List after sorting: ");
+        for(int i = 0; i < descendingList.size(); i++)
+        {
+            System.out.println(descendingList.get(i).toString());
+        }
         System.out.println();
     }
 
