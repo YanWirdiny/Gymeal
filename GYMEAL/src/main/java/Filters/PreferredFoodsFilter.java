@@ -1,6 +1,7 @@
 package Filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PreferredFoodsFilter implements Filter<Food>{
 
@@ -28,12 +29,6 @@ public class PreferredFoodsFilter implements Filter<Food>{
         return filteredlist;
     }
 
-    // checks if the name of the food item equals the preferred food
-    public boolean matchesPreferredFood(String foodName){
-        return this.preferredFood.equals(foodName);
-    }
-
-
     // set the preferred food of this class to the user's input and convert to
     // lowercase
     public void setPreferredFood(String preferredFood){
@@ -44,13 +39,12 @@ public class PreferredFoodsFilter implements Filter<Food>{
     // checks if the preferred food name is contained in the name of a food item
     @Override
     public boolean apply(Food foodItem) {
-        String[] namesOfFood = foodItem.getName().split("\\s");
-        for (String name : namesOfFood) {
-            if (matchesPreferredFood(name)) {
-                return true;
-            }
+        String[] namesOfFood = foodItem.getName().split(this.preferredFood);
+        if (namesOfFood.length == 0){
+            return true;
         }
-        return false;
+        return !namesOfFood[0].equals(foodItem.getName());
     }
+
 
 }
