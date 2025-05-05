@@ -1,4 +1,5 @@
 package com.example.GYMEAL;
+import Filters.Food;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,7 @@ public class CalorieServiceTest {
     void TestFilterMealsFromCSV_ReturnsMealInRange(){
        double targetCalories = 500 ;
        double targetProtein = 0;
-       List<String> mealPlan = calorieService.filterMealsFromCSV(targetCalories, targetProtein);
+       List<Food> mealPlan = calorieService.filterMealsFromCSV(targetCalories);
        assertNotNull(mealPlan, " man your stuff is empty");
        assertFalse(mealPlan.isEmpty(), " Meal plan should not empty");
 

@@ -199,6 +199,8 @@
     const height = Number(document.getElementById('height').value);
     const gender = document.getElementById('gender').value;
     const activity = document.getElementById('activity').value;
+    const protein = Math.round(weight * 1.6);
+    const goal = document.getElementById('goal').value;
 
     const bmr = calculateBMR(weight, height, age, gender);
     const tdee = calculateTDEE(bmr, activity);
@@ -227,6 +229,7 @@
   aggressiveDeeficit: Math.round(tdee - 1000),  // Watch out: match your Java spelling!
   mildGain: Math.round(tdee + 500),
   moderateGain: Math.round(tdee + 750),
+  protein: protein,
   aggressiveGain: Math.round(tdee + 1000),
   bmi: bmi.toFixed(1),
   goal: document.getElementById('goal').value

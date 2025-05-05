@@ -1,5 +1,6 @@
 package com.example.GYMEAL;
 
+import Filters.CaloriesFilter;
 import Filters.Food;
 import  org.springframework.stereotype.Service;
 import Filters.CategoryFilter;
@@ -9,6 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class CalorieService {
@@ -16,103 +20,117 @@ public class CalorieService {
 //     and    search  algorithmn\
 
     public CalorieResponse processCalorieData(CalorieDataRequest request) {
-        // Example: Use maintenance calorie target for filtering meals.
+        double DefaultTargetCalories;
 
-        String goal = request.getGoal();
-        double DefaultTargetCalories = request.getMaintenance();
-        // update default calories
-        if ("deficit".equals(goal)) {
-            DefaultTargetCalories = request.getModerateDeficit(); // pick based on logic
-        } else if ("gain".equals(goal)) {
-            DefaultTargetCalories = request.getModerateGain(); // pick based on logic
+        // Pick calorie target based on goal
+        switch (request.getGoal()) {
+            case "deficit":
+                DefaultTargetCalories = request.getMildDeficit();
+                break;
+            case "moderateDeficit":
+                DefaultTargetCalories = request.getModerateDeficit();
+                break;
+            case "aggressiveDeficit":
+                DefaultTargetCalories = request.getAggressiveDeeficit();
+                break;
+            case "gain":
+                DefaultTargetCalories = request.getMildGain();
+                break;
+            case "moderateGain":
+                DefaultTargetCalories = request.getModerateGain();
+                break;
+            case "aggressiveGain":
+                DefaultTargetCalories = request.getAggressiveGain();
+                break;
+            default:
+                DefaultTargetCalories = request.getMaintenance();
         }
-        List<String> mealPlan = filterMealsFromCSV(DefaultTargetCalories, request.getProtein()); // function to be creeated and  filter  meal  acordingly
-//
+
+        double targetProtein = request.getProtein();
+
+        List<Food> filtered = filterMealsFromCSV(DefaultTargetCalories);
+
         CalorieResponse response = new CalorieResponse();
         response.setMaintenance(DefaultTargetCalories);
-        response.setMealPlan(mealPlan);
+        response.setMealPlan(filtered);
+
         return response;
-        // can add a new list for gaining 500 calories more
-
-    }
-    public CalorieResponse processcategorie( CalorieDataRequest request2){
-        return  null ;
-
-    }
-    public List<String> FilterCategory(String categorie, ArrayList<Food> x ){
-        // call filtercategory here and
-
-        return null;
     }
 
 
 
 
-
-    public List<String> filterMealsFromCSV(double DefaultTargetCalories, double targetprotein) {
+    public List<Food> filterMealsFromCSV(double DefaultTargetCalories) {
 //         return list of  string where protein   of each element is added  to be equal  to final
 //          target calories
-             List<Meal> meals  = new ArrayList<>();
-             String line ;
-             try(BufferedReader  br = new BufferedReader(new FileReader("src/main/resources/static/data.csv"))) {
-                 // skip first line
-                 br.readLine();
-                 while((line = br.readLine()) != null) {
-                     String[] parts = line.split(",");// add part in ana array
-                     String name = parts[0].trim();
-                     double calories = Double.parseDouble(parts[1].trim());
-                     double proteins = Double.parseDouble(parts[3].trim());
-                     meals.add(new Meal(name, calories, proteins));
+        ArrayList<Food> allFoods = new ArrayList<>();
+        String line;
 
-                 }
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/static/data.csv"))) {
+            br.readLine(); // skip header
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 6) {
+                    String name = parts[0].trim();
+                    int calories = Integer.parseInt(parts[1].trim());
+                    double fats = Double.parseDouble(parts[2].trim());
+                    double protein = Double.parseDouble(parts[3].trim());
+                    double carbs = Double.parseDouble(parts[4].trim());
+                    String category = parts[2].trim();
+                    allFoods.add(new Food(name, calories, protein, carbs, fats, category));
 
 
 
-             } catch (FileNotFoundException e) {
-                 throw new RuntimeException(e);
-             } catch (IOException e) {
-                 throw new RuntimeException(e);
-             }
 
-        double calorieSum = 0;
-        List<String>  selectedMeals = new ArrayList<>();
-        for (Meal meal : meals) {
-            if (calorieSum + meal.getCalories() <= DefaultTargetCalories + 50) {
-                calorieSum += meal.getCalories();
-               // String cal = String.valueOf(meal.calories);
-                selectedMeals.add(meal.getName());
+
+                }
             }
-            if (calorieSum >= DefaultTargetCalories - 50) {
-                break;
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading food data", e);
+        }
+
+        // What to do
+                    /*
+
+                         i want  to  randomly  pick one element from each  category   add it a new list
+                          in this new list<food>  called finalList
+                         re-add the same element  form each category  check if we are in range of  <  target -200 ; target+200>
+                           if yes return list
+
+                     */
+
+
+        Map<String, List<Food>> foodsByCategory = allFoods.stream()
+                .collect(Collectors.groupingBy(Food::getCategory));
+
+        Random rand = new Random();
+        ArrayList<Food> finalList = new ArrayList<>();
+
+        // Step 1: Pick one random food from each category
+        for (List<Food> foodsInCategory : foodsByCategory.values()) {
+            if (!foodsInCategory.isEmpty()) {
+                finalList.add(foodsInCategory.get(rand.nextInt(foodsInCategory.size())));
             }
+        }
+
+        // Step 2: Keep adding random foods from any category until total calories are within target range
+        int totalCalories = finalList.stream().mapToInt(Food::getCalories).sum();
+        while (totalCalories < DefaultTargetCalories - 200) {
+            Food randomFood = allFoods.get(rand.nextInt(allFoods.size()));
+            finalList.add(randomFood);
+            totalCalories += randomFood.getCalories();
+
+            if (totalCalories > DefaultTargetCalories + 200) break;
         }
 
 
 
-        return selectedMeals ;
+
+        CaloriesFilter filter = new CaloriesFilter((int) (0), (int) (DefaultTargetCalories + 200));
+        return filter.filterByCalories(finalList, (int) (0), (int) (DefaultTargetCalories + 200));
+
+
     }
 
-    private  static  class  Meal{
-        private  String name ;
-        private  double calories ;
-        private  double protein ;
 
-        public Meal(String name, double calories, double protein) {
-            this.name = name;
-            this.calories = calories;
-            this.protein = protein;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public double getCalories() {
-            return calories;
-        }
-
-        public double getProtein() {
-            return protein;
-        }
-    }
 }

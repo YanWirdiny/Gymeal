@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Gymeal </title>
+
+
     <style>
         body {
-            background-color: lightgray;
+            background-image : url("pictures ressources/Background.png");
             font-family: Verdana, sans-serif;
             text-align: center;
         }
 
         .box {
-            background: white;
+          background : white;
+
             border-radius: 1.5rem;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             padding: 1rem;
@@ -48,9 +51,23 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        #lottie-animation {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 150px;
+  height: 150px;
+  z-index: 999;
+}
+
     </style>
 </head>
 <body>
+<div id="lottie-animation" style="position: fixed; bottom: 20px; left: 20px; width: 100px; height: 100px; z-index: 999;"></div>
+
+
+
 <div class="box">
     <h1>Gymeal</h1>
     <p class="mb-4 text-gray-600">Use Gymeal to find the best meals for your workouts!</p><br>
@@ -144,7 +161,11 @@
     </form>
 </div>
 <script>
+
+
   const form = document.getElementById('gymealForm');
+
+
 
   const activityMultipliers = {
     sedentary: 1.2,
@@ -189,34 +210,39 @@
 
     // create payload and send information through api
 
-    const payload = {
-      maintenance: Math.round(tdee),
-      mildDeficit: Math.round(tdee - 500),
-      moderateDeficit: Math.round(tdee - 750),
-      aggressiveDeficit: Math.round(tdee - 1000),
-      mildGain :Math.round(tdee +  500),
-      moderateGain : Math.round(tdee + 750),
-      aggressiveGain :Math.round(tdee + 1000),
-      bmi: bmi.toFixed(1),
-      goal
-    };
-    // send to api
 
-     fetch('/api/calculate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(data => {
-      localStorage.setItem('mealPlanData', JSON.stringify(data));
-      window.location.href = '/results.html';
-    })
-    .catch(error => {
-      console.error('Error sending data:', error);
-    });
+// save the   few values in localstorage to be reused in  result.html
+
+  localStorage.setItem('tdee', Math.round(tdee));
+    localStorage.setItem('proteinTarget', 100); // your protein logic here
+    localStorage.setItem('bmi', bmi.toFixed(1));
+    localStorage.setItem('goal', goal);
+
+
+
+    const payload = new URLSearchParams({
+  maintenance: Math.round(tdee),
+  mildDeficit: Math.round(tdee - 500),
+  moderateDeficit: Math.round(tdee - 750),
+  aggressiveDeeficit: Math.round(tdee - 1000),  // Watch out: match your Java spelling!
+  mildGain: Math.round(tdee + 500),
+  moderateGain: Math.round(tdee + 750),
+  aggressiveGain: Math.round(tdee + 1000),
+  bmi: bmi.toFixed(1),
+  goal: document.getElementById('goal').value
+     }).toString();
+
+fetch(`/api/calculate?${payload}`, {
+  method: 'GET'
+})
+.then(response => response.json())
+.then(data => {
+  localStorage.setItem('mealPlanData', JSON.stringify(data));
+  window.location.href = '/results.html';
+})
+.catch(error => {
+  console.error('Error sending data:', error);
+});
   });
 </script>
 </body>
