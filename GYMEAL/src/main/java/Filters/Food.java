@@ -22,6 +22,7 @@ public class Food {
     private double protein;
     private double carbs;
     private double fats;
+    private  int servings = 1 ;
 
     //CONSTRUCTORS
     public Food()
@@ -68,6 +69,9 @@ public class Food {
     public String getCategory() {
         return category;
     }
+    public  int getServings(){
+        return servings ;
+    }
 
     //setter methods
     public void setName(String name)
@@ -95,6 +99,12 @@ public class Food {
         this.category = category;
     }
 
+
+    //helper method
+     public  void  addServing(){
+        servings++;
+     }
+
     //converts a Food object into a readable String
     @Override
     public String toString() {
@@ -105,5 +115,9 @@ public class Food {
                 ", Fats: " + fats +
                 ", Category: " + category +
                 ']';
+    }
+
+    public int getTotalCalories() {
+        return calories * servings;
     }
 }

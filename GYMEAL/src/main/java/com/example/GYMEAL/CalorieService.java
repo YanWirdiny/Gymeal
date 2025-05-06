@@ -8,10 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,74 +60,59 @@ public class CalorieService {
     public List<Food> filterMealsFromCSV(double DefaultTargetCalories) {
 //         return list of  string where protein   of each element is added  to be equal  to final
 //          target calories
-        ArrayList<Food> allFoods = new ArrayList<>();
-        String line;
+        /* 1.  Read CSV (unchanged column order) -------------------- */
+        List<Food> allFoods = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(
+                new FileReader("src/main/resources/static/data.csv"))) {
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/static/data.csv"))) {
-            br.readLine(); // skip header
+            br.readLine();                        // skip header
+            String line;
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length >= 6) {
-                    String name = parts[0].trim();
-                    int calories = Integer.parseInt(parts[1].trim());
-                    double fats = Double.parseDouble(parts[2].trim());
-                    double protein = Double.parseDouble(parts[3].trim());
-                    double carbs = Double.parseDouble(parts[4].trim());
-                    String category = parts[2].trim();
-                    allFoods.add(new Food(name, calories, protein, carbs, fats, category));
-
-
-
-
-
+                String[] p = line.split(",");
+                if (p.length >= 6) {
+                    allFoods.add(new Food(
+                            p[0].trim(),                          // Food
+                            Integer.parseInt(p[1].trim()),        // Calories
+                            Double.parseDouble(p[3].trim()),      // Protein
+                            Double.parseDouble(p[4].trim()),      // Carbohydrate
+                            Double.parseDouble(p[2].trim()),      // Fat
+                            p[2].trim()                           // Category  (unchanged)
+                    ));
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException("Error reading food data", e);
         }
 
-        // What to do
-                    /*
-
-                         i want  to  randomly  pick one element from each  category   add it a new list
-                          in this new list<food>  called finalList
-                         re-add the same element  form each category  check if we are in range of  <  target -200 ; target+200>
-                           if yes return list
-
-                     */
-
-
-        Map<String, List<Food>> foodsByCategory = allFoods.stream()
-                .collect(Collectors.groupingBy(Food::getCategory));
-
+        /* 2.  Pick exactly FIVE unique foods ---------------------- */
         Random rand = new Random();
-        ArrayList<Food> finalList = new ArrayList<>();
+        List<Food> mealPlan = new ArrayList<>();
+        HashSet<String> pickedNames = new HashSet<>();
 
-        // Step 1: Pick one random food from each category
-        for (List<Food> foodsInCategory : foodsByCategory.values()) {
-            if (!foodsInCategory.isEmpty()) {
-                finalList.add(foodsInCategory.get(rand.nextInt(foodsInCategory.size())));
+        while (mealPlan.size() < 5) {
+            Food pick = allFoods.get(rand.nextInt(allFoods.size()));
+            if (pickedNames.add(pick.getName())) {   // uniqueness by food name
+                mealPlan.add(pick);
             }
         }
 
-        // Step 2: Keep adding random foods from any category until total calories are within target range
-        int totalCalories = finalList.stream().mapToInt(Food::getCalories).sum();
-        while (totalCalories < DefaultTargetCalories - 200) {
-            Food randomFood = allFoods.get(rand.nextInt(allFoods.size()));
-            finalList.add(randomFood);
-            totalCalories += randomFood.getCalories();
+        /* 3.  Keep upping servings until calories hit the window -- */
+        int lower = (int) (DefaultTargetCalories - 200);
+        int upper = (int) (DefaultTargetCalories + 200);
 
-            if (totalCalories > DefaultTargetCalories + 200) break;
+        int total = mealPlan.stream()
+                .mapToInt(Food::getTotalCalories)
+                .sum();                       // uses servings
+
+        while (total < lower) {
+            // add ONE extra serving to one of the existing five foods
+            Food f = mealPlan.get(rand.nextInt(mealPlan.size()));
+            f.addServing();
+            total += f.getCalories();                    // +1 serving
+
+            if (total > upper) break;                    // window crossed – stop
         }
 
-
-
-
-        CaloriesFilter filter = new CaloriesFilter((int) (0), (int) (DefaultTargetCalories + 200));
-        return filter.filterByCalories(finalList, (int) (0), (int) (DefaultTargetCalories + 200));
-
-
+            return  mealPlan;
     }
-
-
 }

@@ -151,7 +151,7 @@
             <button type="submit">Calculate</button>
         </div>
 
-        <div id="test">
+        <div id="test" style="display : none">
             <ul>
                 <li>Mild deficit (-500): <span id="test1"></span> calories</li>
                 <li>Moderate deficit (-750): <span id="test2"></span> calories</li>
@@ -216,7 +216,7 @@
 // save the   few values in localstorage to be reused in  result.html
 
   localStorage.setItem('tdee', Math.round(tdee));
-    localStorage.setItem('proteinTarget', 100); // your protein logic here
+    localStorage.setItem('proteinTarget', Math.round(protein); // your protein logic here
     localStorage.setItem('bmi', bmi.toFixed(1));
     localStorage.setItem('goal', goal);
 

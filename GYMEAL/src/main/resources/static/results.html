@@ -68,7 +68,7 @@
         <h2>Meals</h2>
 
         <div id="meal-plan"></div>
-        <p>Note...</p>
+        <p>Note :   1 serving   is equivalent to 100g please eat adequately to achieve your goal. </p>
     </div>
 </div>
 <script>
@@ -78,7 +78,7 @@
    if (data && data.mealPlan) {
      // Create HTML content based on the meal plan array
      const planHTML = data.mealPlan.map(food =>
-  `<p><strong>${food.name}</strong> - ${food.calories} kcal, ${food.protein}g protein, ${food.carbs}g carbs, ${food.fats}g fats</p>`
+  `<p><strong>${food.name}</strong> - ${food.calories} kcals, ${food.protein}g protein, ${food.carbs}g carbs, ${food.fats}g fats</p>`
 ).join('');
 
 
@@ -128,7 +128,7 @@
     // Now display meal data
     const data = JSON.parse(localStorage.getItem('mealPlanData'));
     if (data && data.mealPlan) {
-      const planHTML = data.mealPlan.map(meal => `<p>${meal.name} — ${meal.calories} kcal</p>`).join('');
+      const planHTML = data.mealPlan.map(meal => `<p>    <strong> ${meal.name}</strong> — ${meal.calories} kcal  —  Serving : ${meal.servings} </p>`).join('');
       document.getElementById('meal-plan').innerHTML = planHTML;
     } else {
       document.getElementById('meal-plan').innerHTML = '<p>No meal plan data available.</p>';
