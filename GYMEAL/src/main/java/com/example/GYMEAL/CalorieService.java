@@ -63,7 +63,7 @@ public class CalorieService {
         /* 1.  Read CSV (unchanged column order) -------------------- */
         List<Food> allFoods = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
-                new FileReader("src/main/resources/static/data.csv"))) {
+                new FileReader("src/main/resources/static/foods.csv"))) {
 
             br.readLine();                        // skip header
             String line;
@@ -84,7 +84,7 @@ public class CalorieService {
             throw new RuntimeException("Error reading food data", e);
         }
 
-        /* 2.  Pick exactly FIVE unique foods ---------------------- */
+
         Random rand = new Random();
         List<Food> mealPlan = new ArrayList<>();
         HashSet<String> pickedNames = new HashSet<>();
@@ -96,7 +96,7 @@ public class CalorieService {
             }
         }
 
-        /* 3.  Keep upping servings until calories hit the window -- */
+
         int lower = (int) (DefaultTargetCalories - 200);
         int upper = (int) (DefaultTargetCalories + 200);
 
@@ -110,9 +110,12 @@ public class CalorieService {
             f.addServing();
             total += f.getCalories();                    // +1 serving
 
-            if (total > upper) break;                    // window crossed – stop
+            if (total > upper) break;
         }
 
-            return  mealPlan;
+
+        CaloriesFilter  filtered = new CaloriesFilter(0 ,upper);
+            return filtered.filterByCalories(mealPlan, 0 ,upper);
     }
+
 }

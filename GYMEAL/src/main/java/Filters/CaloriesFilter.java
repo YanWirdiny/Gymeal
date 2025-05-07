@@ -6,6 +6,7 @@
 package Filters;
 
 import java.util.ArrayList;
+ import java.util.List;
 
 public class CaloriesFilter implements Filter<Food>{
 
@@ -38,7 +39,7 @@ public class CaloriesFilter implements Filter<Food>{
     //method that returns a filtered food list based off of a caloric range
     //this method DOES NOT order them from the largest value to the smallest value or vice-versa.
     //we can use another method to do that (using QuickSort, RadixSort, etc.)
-    public ArrayList<Food> filterByCalories(ArrayList<Food> unfilteredList, int min, int max)
+    public ArrayList<Food> filterByCalories(List<Food> unfilteredList, int min, int max)
     {
         //calories filter
         //list that contains filtered foods based of caloric range
