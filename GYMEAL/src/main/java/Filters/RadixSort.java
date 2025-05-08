@@ -26,15 +26,12 @@ public class RadixSort {
         return max;
     }
 
-    // method to do counting sort on foodList according to
-    // the digit represented by exp.
+    // method to do counting sort on foodList according to the digit represented by exp.
     public void countSort(ArrayList<Food> foodList, int exp)
     {
         ArrayList<Food> output = new ArrayList<Food>(); // output array
-
         //populates the empty ArrayList with 'null' so that 'output' and 'foodList' have the same size
-        for(int k = 0; k < foodList.size(); k++)
-        {
+        for(int k = 0; k < foodList.size(); k++) {
             output.add(null);
         }
 
@@ -44,32 +41,22 @@ public class RadixSort {
         Arrays.fill(count, 0);
 
         // Store frequency of occurrences in count[]
-        for (int i = 0; i < foodList.size(); i++)
-        {
+        for (int i = 0; i < foodList.size(); i++) {
             count[(foodList.get(i).getCalories() / exp) % 10]++;
         }
-
         // Change count[i] so that count[i] now contains actual position of this digit in output
-        for (int i = 1; i < 10; i++)
-        {
+        for (int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
         }
-
         // Build the output array
-        for (int i = foodList.size() - 1; i >= 0; i--)
-        {
+        for (int i = foodList.size() - 1; i >= 0; i--) {
             /* food at index i (which starts at the end of the list) placed in output at index j where:
-             * j = ((caloric value/exp) % 10) - 1
-             * */
+             * j = ((caloric value/exp) % 10) - 1*/
             output.set(count[(foodList.get(i).getCalories() /exp) %10] - 1, foodList.get(i));
             count[(foodList.get(i).getCalories() / exp) % 10]--;
         }
-
         // Copy the output array to foodList, so that foodList now contains foods sorted by caloric value
-        //NOTE: you could simply modify this method so that it returns the output ArrayList
-
-        for (int i = 0; i < foodList.size(); i++)
-        {
+        for (int i = 0; i < foodList.size(); i++) {
             foodList.set(i, output.get(i));
         }
     }
@@ -77,7 +64,7 @@ public class RadixSort {
     // The main method that sorts foodList using Radix Sort
     public ArrayList<Food> radixSort(ArrayList<Food> foodList)
     {
-        // Find the maximum number to know number of digits
+        // Find the max value to know total number of digits
         int m = getMax(foodList);
 
         // Do counting sort for every digit. Note that instead of passing digit number, exp is passed.
